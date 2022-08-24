@@ -1,0 +1,8 @@
+tweepy==4.10.0
+nlplot==1.4.0
+streamlit
+setuptools_rust
+mecab-python3~=1.0.5
+sqlalchemy
+psycopg2
+japanize-matplotlib

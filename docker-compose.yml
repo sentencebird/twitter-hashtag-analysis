@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  app:
+    image: twitter-hashtag-analysis
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: streamlit run src/app.py
+    # command: /bin/bash
+    ports:
+      - "8501:8501"
+    volumes:
+      - "./src:/usr/src/app/src"
