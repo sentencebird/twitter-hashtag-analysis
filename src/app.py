@@ -101,7 +101,7 @@ def wordcloud():
     word_counts = {k: v for k, v in collections.Counter(
         list(itertools.chain.from_iterable(npt.df[npt.target_col].tolist()))).items() if k not in npt.default_stopwords}
 
-    font_path = "src/ヒラギノ角ゴシック W3.ttc"
+    font_path = "src/ipaexg.ttf"
     wordcloud = WordCloud(
         background_color='white',
         stopwords=npt.default_stopwords,
