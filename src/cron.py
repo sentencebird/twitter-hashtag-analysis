@@ -8,6 +8,8 @@ import numpy as np
 import string
 from tqdm import tqdm
 import argparse
+import collections
+import itertools
 
 parser = argparse.ArgumentParser()
 
@@ -95,3 +97,9 @@ d = [{"word": word, "tweet_indices": indices, "count": len(
     indices)} for word, indices in indices_by_topword.items()]
 indices_df = pd.DataFrame(d)
 indices_df.to_sql(f"{service}_indices", con=engine, if_exists="replace")
+
+# Word Cloud
+word_counts = {k: v for k, v in collections.Counter(
+    list(itertools.chain.from_iterable(npt.df[npt.target_col].tolist()))).items() if k not in stopwords}
+pd.DataFrame(word_counts.items(), columns=["word", "count"]).to_sql(
+    f"{service}_wordcount", con=engine, if_exists="replace")

@@ -54,6 +54,12 @@ def fetch_tweet_indices(service):
 
 
 @st.cache
+def fetch_word_counts(service):
+    res = engine.execute(f'SELECT * FROM {service}_wordcount').fetchall()
+    return [{"index": r[0], "word": r[1], "count": int(r[2])} for r in res]
+
+
+@st.cache
 def tweet_indices_by_word(service):
     indices = fetch_tweet_indices(service)
     return {i["word"]: i["indices"] for i in indices}
@@ -107,8 +113,7 @@ def wordcloud(service):
         stopwords=stopwords(),
         save=True
     )
-    word_counts = {k: v for k, v in collections.Counter(
-        list(itertools.chain.from_iterable(npt.df[npt.target_col].tolist()))).items() if k not in stopwords()}
+    word_counts = {r["word"]: r["count"] for r in fetch_word_counts(service)}
 
     font_path = "src/ipaexg.ttf"
     wordcloud = WordCloud(
