@@ -147,7 +147,7 @@ if service not in ["midjourney", "stablediffusion"]:
 opt = st.sidebar.radio("表示", ["画像一覧", "テキスト分析"])
 
 st.markdown(
-    f"# [#{service}](https://twitter.com/search?q=%23midjourney&src=recent_search_click) Tweets", unsafe_allow_html=True)
+    f"# [#{service}](https://twitter.com/search?q=%23{service}&src=recent_search_click) Tweets", unsafe_allow_html=True)
 
 if opt == "画像一覧":
     indices = fetch_tweet_indices(service)
