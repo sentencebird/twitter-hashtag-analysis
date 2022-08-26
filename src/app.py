@@ -131,17 +131,20 @@ def co_network(service):
     df = pd.DataFrame(fetch_tweets(service))
     npt = nlplot.NLPlot(df, target_col='tokens', output_file_path="src/")
 
-    npt.build_graph(stopwords=stopwords(), min_edge_frequency=10)
-    npt.co_network(title='network', width=1000, height=700, save=True)
+    npt.build_graph(stopwords=stopwords(), min_edge_frequency=2)
+    npt.co_network(title='network', width=1000, height=1000, save=True)
 
     fname = datetime.datetime.now().strftime("%Y-%m-%d_network.html")
     HtmlFile = open(f"src/{fname}", 'r', encoding='utf-8')
     return HtmlFile.read()
 
 
-service = st.sidebar.selectbox(
+service = st.sidebar.radio(
     "サービス", ["Midjourney", "Stable Diffusion"]).replace(" ", "").lower()
-opt = st.sidebar.selectbox("表示", ["画像一覧", "テキスト分析"])
+if service not in ["midjourney", "stablediffusion"]:
+    st.stop()
+
+opt = st.sidebar.radio("表示", ["画像一覧", "テキスト分析"])
 
 st.markdown(
     f"# [#{service}](https://twitter.com/search?q=%23midjourney&src=recent_search_click) Tweets", unsafe_allow_html=True)

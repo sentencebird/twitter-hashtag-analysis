@@ -33,8 +33,8 @@ api = tweepy.API(auth)
 
 engine = create_engine(DB_URL)
 
-default_stopwords = ["midjourney", "Midjourney", "midjourneyart", "midjourneyAi", "ミッドジャーニー", "stablediffusion",
-                     "AI", "画像", "絵", "beta", "aiart", "of", "the", "in",
+default_stopwords = ["midjourney", "Midjourney", "midjourneyart", "MidjourneyAI", "midjourneyAi", "ミッドジャーニー", "stablediffusion", "stable", "diffusion", "dreamstudio", "DreamStudio",
+                     "AI", "AIart", "画像", "絵", "beta", "aiart", "img", "colab", "prompt", "of", "the", "in", "by",
                      "https", "…", ",", "-",  "co", "さん", "の", "　", "#", "/", ".", "://", "_", "(", ")", '"', "'", "¥n", "¥n¥n", "@"] + [s for s in string.ascii_letters]
 
 
@@ -73,7 +73,7 @@ df.to_sql(f"{service}_tweets", con=engine, if_exists="replace")
 # Word Index
 npt = nlplot.NLPlot(df, target_col='tokens')
 
-stopwords = npt.get_stopword(top_n=20)
+stopwords = npt.get_stopword(top_n=5, min_freq=0)
 stopwords += default_stopwords
 
 pd.DataFrame(stopwords, columns=["words"]).to_sql(
