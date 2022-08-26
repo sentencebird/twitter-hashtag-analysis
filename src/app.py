@@ -66,8 +66,8 @@ def tweet_indices_by_word(service):
 
 
 @st.cache
-def stopwords():
-    res = engine.execute('SELECT * FROM stopwords').fetchall()
+def stopwords(service):
+    res = engine.execute(f'SELECT * FROM {service}_stopwords').fetchall()
     return [r[1] for r in res]
 
 
@@ -97,7 +97,7 @@ def bar_ngram(service):
         ngram=1,
         top_n=200,
         height=3000,
-        stopwords=stopwords(),
+        stopwords=stopwords(service),
     )
 
 
@@ -110,7 +110,7 @@ def wordcloud(service):
         max_words=100,
         max_font_size=100,
         colormap='tab20_r',
-        stopwords=stopwords(),
+        stopwords=stopwords(service),
         save=True
     )
     word_counts = {r["word"]: r["count"] for r in fetch_word_counts(service)}
@@ -118,7 +118,7 @@ def wordcloud(service):
     font_path = "src/ipaexg.ttf"
     wordcloud = WordCloud(
         background_color='white',
-        stopwords=stopwords(),
+        stopwords=stopwords(service),
         colormap='tab20_r',
         width=1000,
         height=700,
@@ -131,7 +131,7 @@ def co_network(service):
     df = pd.DataFrame(fetch_tweets(service))
     npt = nlplot.NLPlot(df, target_col='tokens', output_file_path="src/")
 
-    npt.build_graph(stopwords=stopwords(), min_edge_frequency=2)
+    npt.build_graph(stopwords=stopwords(service), min_edge_frequency=2)
     npt.co_network(title='network', width=1000, height=1000, save=True)
 
     fname = datetime.datetime.now().strftime("%Y-%m-%d_network.html")

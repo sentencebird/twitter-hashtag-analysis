@@ -77,7 +77,7 @@ stopwords = npt.get_stopword(top_n=5, min_freq=0)
 stopwords += default_stopwords
 
 pd.DataFrame(stopwords, columns=["words"]).to_sql(
-    "stopwords", con=engine, if_exists="replace")
+    f"{service}_stopwords", con=engine, if_exists="replace")
 
 ngram_df = npt.df.copy()
 ngram_df.loc[:, 'space'] = ngram_df[npt.target_col].apply(
